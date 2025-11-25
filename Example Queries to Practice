@@ -1,0 +1,28 @@
+Example Queries to Practice: Total Acquired Acres: SQL
+
+SELECT SUM(Acres) AS TotalAcquiredAcres
+FROM Parcel
+WHERE AcquisitionDate IS NOT NULL AND ParcelName != 'Dutton Ranch Core';
+
+Total Land Value with Easements: SQL
+SELECT SUM(CurrentMarketValue) AS TotalRanchValue
+FROM Parcel
+WHERE RanchID = 1;
+
+Net Cash Flow from Land Acquisitions and Asset Sales: SQL
+SELECT SUM(Amount) AS NetCashFlow
+FROM FinancialTransaction
+WHERE TransactionType IN ('Land Acquisition', 'Asset Sale');
+
+Parcels under Conservation Easement and their reduced value: SQL
+SELECT ParcelName, Acres, ApproximateValuePerAcre AS OriginalValuePerAcre,
+       ApproximateValuePerAcre * Acres AS OriginalTotalValue,
+       CurrentMarketValue,
+       EasementValueReductionPct * 100 AS ReductionPercentage
+FROM Parcel
+WHERE IsConservationEasement = TRUE;
+
+Financial Benefit from Conservation Easements: SQL
+SELECT SUM(BenefitAmount) AS TotalConservationBenefit
+FROM ConservationEasementBenefit;
+
