@@ -1,0 +1,17 @@
+This project aims to simulate a complex financial scenario involving land acquisition, conservation easements, and asset divestiture, inspired by the "Yellowstone" series. I'll design a SQL schema, populate it with realistic (fictional) data, create financial statements, and structure a GitHub repository for showcasing.
+Project Title: Dutton Ranch Strategic Land & Asset Management
+Scenario: Beth Dutton, on behalf of Dutton Ranch, embarks on a strategic land acquisition spree around the Chief Joseph Ranch (the real-life Dutton Ranch) in Montana's Bitterroot Valley to create a "moat" against development. Concurrently, she applies for conservation easements on these newly acquired lands to permanently protect them. To finance these acquisitions, Dutton Ranch sells off a controlling interest in a fictional investment firm, "Schwartz and Meyer."
+
+Key Data Points & Assumptions:
+
+Chief Joseph Ranch: Located in Darby, Montana, historically 2,500 acres. We'll assume the core Dutton Ranch remains 2,500 acres.
+
+Bitterroot Valley Land Values: Current land values in Ravalli County (where Darby is located) vary significantly. We'll use an average of $5,000 - $15,000 per acre for undeveloped land, adjusting for desirable features (river frontage, views). For simplicity, we'll assume a consistent average value for acquired parcels.
+
+Schwartz and Meyer: Fictional investment firm. We'll assign a plausible valuation and determine a "controlling interest" sale percentage (e.g., 51%).
+
+Conservation Easement: Reduces land value for development but offers tax benefits. We'll model this as a percentage reduction in value for the land under easement.
+
+Land Acquisition: Assume a series of individual parcel purchases around the existing ranch.
+
+Financial Statements: Fictional, but based on realistic accounting principles for land transactions and asset sales.
