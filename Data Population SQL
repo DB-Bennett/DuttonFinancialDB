@@ -1,0 +1,41 @@
+-- Populate Ranch
+INSERT INTO Ranch (RanchName, Acres, Location, DateEstablished) VALUES
+('Chief Joseph Ranch (Dutton Ranch)', 2500.00, 'Darby, Montana, Bitterroot Valley', '1880-01-01');
+
+-- Populate Company (Schwartz and Meyer)
+INSERT INTO Company (CompanyName, Industry, InitialValuation, ControllingInterestPct, SaleDate, SaleAmount) VALUES
+('Schwartz and Meyer', 'Investment Firm', 500000000.00, 0.51, '2025-06-15', 255000000.00); -- 51% of $500M
+
+-- Populate Parcels (Dutton Ranch and 5 acquired parcels)
+INSERT INTO Parcel (ParcelName, Acres, ApproximateValuePerAcre, AcquisitionDate, AcquisitionCost, IsConservationEasement, EasementDate, EasementValueReductionPct, RanchID, Notes) VALUES
+('Dutton Ranch Core', 2500.00, 10000.00, '1880-01-01', 0.00, FALSE, NULL, 0.00, 1, 'Original ranch property'),
+('North Fork Acquisition', 500.00, 8000.00, '2025-01-10', 4000000.00, TRUE, '2025-03-01', 0.35, 1, 'Strategic acquisition for northern buffer'),
+('Bitterroot River Frontage', 150.00, 15000.00, '2025-02-01', 2250000.00, TRUE, '2025-04-15', 0.40, 1, 'Key river access and scenic value'),
+('Western Ridge Expansion', 300.00, 6000.00, '2025-03-05', 1800000.00, TRUE, '2025-05-10', 0.30, 1, 'High-elevation grazing land'),
+('Elk Preserve Lands', 700.00, 7500.00, '2025-04-20', 5250000.00, TRUE, '2025-06-01', 0.38, 1, 'Critical wildlife corridor'),
+('Southern Valley Buffer', 200.00, 9000.00, '2025-05-15', 1800000.00, TRUE, '2025-07-01', 0.32, 1, 'Protection from encroaching development');
+
+-- Update CurrentMarketValue for parcels with easements (ApproximateValuePerAcre * Acres * (1 - EasementValueReductionPct))
+UPDATE Parcel
+SET CurrentMarketValue =
+    CASE
+        WHEN IsConservationEasement = TRUE THEN ApproximateValuePerAcre * Acres * (1 - EasementValueReductionPct)
+        ELSE ApproximateValuePerAcre * Acres
+    END;
+
+-- Populate FinancialTransactions
+INSERT INTO FinancialTransaction (TransactionDate, TransactionType, Amount, Description, RelatedParcelID, RelatedCompanyID) VALUES
+('2025-06-15', 'Asset Sale', 255000000.00, 'Sale of controlling interest in Schwartz and Meyer', NULL, 1),
+('2025-01-10', 'Land Acquisition', -4000000.00, 'Purchase of North Fork Acquisition parcel', 2, NULL),
+('2025-02-01', 'Land Acquisition', -2250000.00, 'Purchase of Bitterroot River Frontage parcel', 3, NULL),
+('2025-03-05', 'Land Acquisition', -1800000.00, 'Purchase of Western Ridge Expansion parcel', 4, NULL),
+('2025-04-20', 'Land Acquisition', -5250000.00, 'Purchase of Elk Preserve Lands parcel', 5, NULL),
+('2025-05-15', 'Land Acquisition', -1800000.00, 'Purchase of Southern Valley Buffer parcel', 6, NULL);
+
+-- Populate ConservationEasementBenefit (simplified - typically this would be spread over years)
+INSERT INTO ConservationEasementBenefit (ParcelID, BenefitType, BenefitAmount, BenefitDate, Notes) VALUES
+(2, 'Federal Income Tax Deduction', 4000000.00 * 0.35, '2025-12-31', 'Estimated tax benefit from North Fork Easement'), -- Value of easement = original value * reduction pct
+(3, 'Federal Income Tax Deduction', 2250000.00 * 0.40, '2025-12-31', 'Estimated tax benefit from River Frontage Easement'),
+(4, 'Federal Income Tax Deduction', 1800000.00 * 0.30, '2025-12-31', 'Estimated tax benefit from Western Ridge Easement'),
+(5, 'Federal Income Tax Deduction', 5250000.00 * 0.38, '2025-12-31', 'Estimated tax benefit from Elk Preserve Easement'),
+(6, 'Federal Income Tax Deduction', 1800000.00 * 0.32, '2025-12-31', 'Estimated tax benefit from Southern Valley Easement');
