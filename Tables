@@ -1,0 +1,85 @@
+Tables:
+
+Ranch: Stores information about the main Dutton Ranch.
+
+RanchID (PK, INT)
+
+RanchName (VARCHAR(100))
+
+Acres (DECIMAL(10,2))
+
+Location (VARCHAR(255))
+
+DateEstablished (DATE)
+
+Parcel: Details of individual land parcels, both existing and acquired.
+
+ParcelID (PK, INT)
+
+ParcelName (VARCHAR(100))
+
+Acres (DECIMAL(10,2))
+
+ApproximateValuePerAcre (DECIMAL(15,2)) - Pre-acquisition/easement value
+
+CurrentMarketValue (DECIMAL(18,2)) - Reflects impact of easements, if any
+
+AcquisitionDate (DATE)
+
+AcquisitionCost (DECIMAL(18,2))
+
+IsConservationEasement (BOOLEAN) - True if under easement
+
+EasementDate (DATE) - Date easement was applied
+
+EasementValueReductionPct (DECIMAL(5,2)) - Percentage reduction due to easement (e.g., 0.30 for 30%)
+
+RanchID (FK, INT) - Links to the main Ranch
+
+Notes (TEXT)
+
+FinancialTransaction: Records all monetary transactions (land acquisition, asset sales).
+
+TransactionID (PK, INT)
+
+TransactionDate (DATE)
+
+TransactionType (VARCHAR(50)) - e.g., 'Land Acquisition', 'Asset Sale'
+
+Amount (DECIMAL(18,2))
+
+Description (TEXT)
+
+RelatedParcelID (FK, INT, NULLABLE) - Links to Parcel if transaction is land-related
+
+RelatedCompanyID (FK, INT, NULLABLE) - Links to Company if transaction is asset-related
+
+Company: Details of companies involved (e.g., Schwartz and Meyer).
+
+CompanyID (PK, INT)
+
+CompanyName (VARCHAR(100))
+
+Industry (VARCHAR(100))
+
+InitialValuation (DECIMAL(18,2)) - Pre-sale valuation
+
+ControllingInterestPct (DECIMAL(5,2)) - Percentage sold
+
+SaleDate (DATE)
+
+SaleAmount (DECIMAL(18,2))
+
+ConservationEasementBenefit: Tracks financial benefits derived from conservation easements (e.g., tax deductions).
+
+BenefitID (PK, INT)
+
+ParcelID (FK, INT)
+
+BenefitType (VARCHAR(100)) - e.g., 'Federal Income Tax Deduction', 'Estate Tax Reduction'
+
+BenefitAmount (DECIMAL(18,2))
+
+BenefitDate (DATE)
+
+Notes (TEXT)
