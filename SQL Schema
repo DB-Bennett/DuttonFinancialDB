@@ -1,0 +1,67 @@
+-- Drop tables if they exist to allow for clean re-creation
+DROP TABLE IF EXISTS ConservationEasementBenefit;
+DROP TABLE IF EXISTS FinancialTransaction;
+DROP TABLE IF EXISTS Parcel;
+DROP TABLE IF EXISTS Company;
+DROP TABLE IF EXISTS Ranch;
+
+-- 1. Ranch Table
+CREATE TABLE Ranch (
+    RanchID SERIAL PRIMARY KEY,
+    RanchName VARCHAR(100) NOT NULL,
+    Acres DECIMAL(10,2) NOT NULL,
+    Location VARCHAR(255) NOT NULL,
+    DateEstablished DATE NOT NULL
+);
+
+-- 4. Company Table
+CREATE TABLE Company (
+    CompanyID SERIAL PRIMARY KEY,
+    CompanyName VARCHAR(100) NOT NULL,
+    Industry VARCHAR(100),
+    InitialValuation DECIMAL(18,2),
+    ControllingInterestPct DECIMAL(5,2),
+    SaleDate DATE,
+    SaleAmount DECIMAL(18,2)
+);
+
+-- 2. Parcel Table
+CREATE TABLE Parcel (
+    ParcelID SERIAL PRIMARY KEY,
+    ParcelName VARCHAR(100) NOT NULL,
+    Acres DECIMAL(10,2) NOT NULL,
+    ApproximateValuePerAcre DECIMAL(15,2) NOT NULL,
+    CurrentMarketValue DECIMAL(18,2),
+    AcquisitionDate DATE,
+    AcquisitionCost DECIMAL(18,2),
+    IsConservationEasement BOOLEAN DEFAULT FALSE,
+    EasementDate DATE,
+    EasementValueReductionPct DECIMAL(5,2) DEFAULT 0.00,
+    RanchID INT NOT NULL,
+    Notes TEXT,
+    FOREIGN KEY (RanchID) REFERENCES Ranch(RanchID)
+);
+
+-- 3. FinancialTransaction Table
+CREATE TABLE FinancialTransaction (
+    TransactionID SERIAL PRIMARY KEY,
+    TransactionDate DATE NOT NULL,
+    TransactionType VARCHAR(50) NOT NULL,
+    Amount DECIMAL(18,2) NOT NULL,
+    Description TEXT,
+    RelatedParcelID INT,
+    RelatedCompanyID INT,
+    FOREIGN KEY (RelatedParcelID) REFERENCES Parcel(ParcelID),
+    FOREIGN KEY (RelatedCompanyID) REFERENCES Company(CompanyID)
+);
+
+-- 5. ConservationEasementBenefit Table
+CREATE TABLE ConservationEasementBenefit (
+    BenefitID SERIAL PRIMARY KEY,
+    ParcelID INT NOT NULL,
+    BenefitType VARCHAR(100) NOT NULL,
+    BenefitAmount DECIMAL(18,2) NOT NULL,
+    BenefitDate DATE NOT NULL,
+    Notes TEXT,
+    FOREIGN KEY (ParcelID) REFERENCES Parcel(ParcelID)
+);
